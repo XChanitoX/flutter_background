@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_background/models/ejemplar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/isar_providers.dart';
 
@@ -73,6 +74,18 @@ class HomePage extends ConsumerWidget {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final isar = await ref.read(isarProvider.future);
+          await isar.writeTxn(() async {
+            await isar.ejemplars.clear(); // Limpia todos los registros
+          });
+          // Refresca el provider para actualizar la UI
+          ref.refresh(ejemplarProvider);
+        },
+        backgroundColor: Colors.red,
+        child: const Icon(Icons.delete),
       ),
     );
   }
