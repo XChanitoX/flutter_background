@@ -1,36 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'home_page.dart';
+import 'ui/home_page.dart';
+import 'services/sync_service.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Solicitar permisos necesarios para el servicio en segundo plano
-  await _requestPermissions();
-
-  runApp(const ProviderScope(child: MainApp()));
+void main() {
+  runApp(const ProviderScope(child: MyApp()));
+  initializeService(); // Inicia la sincronización
 }
 
-Future<void> _requestPermissions() async {
-  if (await Permission.notification.isDenied) {
-    await Permission.notification.request();
-  }
-  if (await Permission.scheduleExactAlarm.isDenied) {
-    await Permission.scheduleExactAlarm.request();
-  }
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      title: 'Ejemplares Sincronizados',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
       home: const HomePage(),
     );
