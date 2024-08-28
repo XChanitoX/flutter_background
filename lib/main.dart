@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'ui/home_page.dart';
-import 'services/sync_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,7 +10,6 @@ void main() async {
   await _requestPermissions();
 
   runApp(const ProviderScope(child: MyApp()));
-  initializeService(); // Inicia la sincronización
 }
 
 Future<void> _requestPermissions() async {

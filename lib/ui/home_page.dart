@@ -2,12 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_background/models/ejemplar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/isar_providers.dart';
+import '../services/sync_service.dart'; // Importa el servicio de sincronización
 
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  HomePageState createState() => HomePageState();
+}
+
+class HomePageState extends ConsumerState<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    // Inicializa el servicio de sincronización cuando se carga la página
+    initializeService();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final ejemplaresAsyncValue = ref.watch(ejemplarProvider);
 
     return Scaffold(

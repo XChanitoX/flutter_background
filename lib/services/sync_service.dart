@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import '../db/isar_config.dart';
 import '../models/ejemplar.dart';
+import '../db/isar_singleton.dart'; // Importa el Singleton
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -11,7 +11,9 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 @pragma('vm:entry-point')
 Future<bool> onStart(ServiceInstance service) async {
   DartPluginRegistrant.ensureInitialized();
-  final isar = await openIsar();
+
+  // Obtener la instancia Singleton de Isar
+  final isar = await IsarInstance.getInstance();
 
   // Configurar el canal de notificación para Android
   const AndroidNotificationDetails androidPlatformChannelSpecifics =
