@@ -13,7 +13,7 @@ Future<bool> onStart(ServiceInstance service) async {
   DartPluginRegistrant.ensureInitialized();
   final isar = await openIsar();
 
-  // Configurar el canal de notificación
+  // Configurar el canal de notificación para Android
   const AndroidNotificationDetails androidPlatformChannelSpecifics =
       AndroidNotificationDetails(
     'my_foreground', // ID del canal
@@ -26,8 +26,18 @@ Future<bool> onStart(ServiceInstance service) async {
     showWhen: false, // Ocultar la hora de la notificación
   );
 
-  const NotificationDetails platformChannelSpecifics =
-      NotificationDetails(android: androidPlatformChannelSpecifics);
+  // Configurar detalles de la notificación para iOS y macOS
+  const DarwinNotificationDetails iosPlatformChannelSpecifics =
+      DarwinNotificationDetails(
+    presentAlert: true, // Mostrar alerta
+    presentBadge: true, // Mostrar ícono de badge
+    presentSound: true, // Reproducir sonido
+  );
+
+  const NotificationDetails platformChannelSpecifics = NotificationDetails(
+    android: androidPlatformChannelSpecifics,
+    iOS: iosPlatformChannelSpecifics, // Agregar detalles para iOS
+  );
 
   // Mostrar la notificación inicial
   await flutterLocalNotificationsPlugin.show(
@@ -71,11 +81,22 @@ Future<bool> onStart(ServiceInstance service) async {
 Future<void> initializeService() async {
   final service = FlutterBackgroundService();
 
+  // Configuración de inicialización para Android
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_notification');
 
-  const InitializationSettings initializationSettings =
-      InitializationSettings(android: initializationSettingsAndroid);
+  // Configuración de inicialización para iOS y macOS
+  const DarwinInitializationSettings initializationSettingsIOS =
+      DarwinInitializationSettings(
+    requestAlertPermission: true,
+    requestBadgePermission: true,
+    requestSoundPermission: true,
+  );
+
+  const InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+    iOS: initializationSettingsIOS, // Agregar la configuración para iOS
+  );
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
