@@ -67,7 +67,7 @@ class HomePage extends ConsumerWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  ref.refresh(ejemplarProvider); // Permite reintentar
+                  final _ = ref.refresh(ejemplarProvider); // Permite reintentar
                 },
                 child: const Text("Reintentar"),
               ),
@@ -82,7 +82,7 @@ class HomePage extends ConsumerWidget {
             await isar.ejemplars.clear(); // Limpia todos los registros
           });
           // Refresca el provider para actualizar la UI
-          ref.refresh(ejemplarProvider);
+          final _ = ref.refresh(ejemplarProvider);
         },
         backgroundColor: Colors.red,
         child: const Icon(Icons.delete),
